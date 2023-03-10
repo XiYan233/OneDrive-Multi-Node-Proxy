@@ -1,0 +1,16 @@
+{
+  "url_config": {
+    "cn_mobile": {
+      "url": "https://1111.com"
+    },
+    "cn_uni": {
+      "url": "https://2222.com"
+    },
+    "cn_tele": {
+      "url": "https://3333.com"
+    },
+    "other": {
+      "url": "https://baidu.com"
+    }
+  }
+}
