@@ -36,7 +36,18 @@ cd onedrive-proxy-linux-amd64
   }
 }
 ```
-- 配置SSL证书并放在 `SSL` 文件夹内,替换文件夹内的 `cert.pem`和 `key.pem`,SSL证书生成方法自行搜索
+- 配置SSL证书并放在 `SSL` 文件夹内,替换文件夹内的 `cert.pem`和 `key.pem`,~~SSL证书生成方法自行搜索~~
+```shell
+# 下载acme
+curl  https://get.acme.sh | sh -s email=my@example.com
+# https://dash.cloudflare.com/profile/api-tokens 前往Cloudflare获取Global API Key
+export CF_Key="you Global API Key"
+export CF_Email="my@example.com"
+# 开始颁发证书
+acme.sh --issue --dns dns_cf -d xxx.example.com
+# 将证书文件cert.pem和key.pem放在SSL目录下
+acme.sh --install-cert -d xxx.example.com --key-file SSL/key.pem --fullchain-file SSL/cert.pem
+```
 - 运行 `onedrive-proxy-linux-amd64`,请确保 `443` 端口没有被占用
 ```shell
 ./onedrive-proxy-linux-amd64
