@@ -52,3 +52,34 @@ acme.sh --install-cert -d xxx.example.com --key-file SSL/key.pem --fullchain-fil
 ```shell
 ./onedrive-proxy-linux-amd64
 ```
+### 附OneDrive反代配置
+```
+#PROXY-START/
+location  ~* \.(php|jsp|cgi|asp|aspx)$
+{
+    proxy_pass https://改成你的-my.sharepoint.com;
+    proxy_set_header Host 改成你的-my.sharepoint.com;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header REMOTE-HOST $remote_addr;   
+    proxy_set_header Range $http_range;
+}
+location /
+{
+    proxy_pass https://改成你的-my.sharepoint.com;
+    proxy_set_header Host 改成你的-my.sharepoint.com;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header REMOTE-HOST $remote_addr;
+    proxy_set_header Range $http_range; 
+    
+    add_header X-Cache $upstream_cache_status;
+    
+    #Set Nginx Cache
+    
+    	add_header Cache-Control no-cache;
+    expires 12h;
+}
+
+#PROXY-END/
+```
