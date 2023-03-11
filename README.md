@@ -52,34 +52,77 @@ acme.sh --install-cert -d xxx.example.com --key-file SSL/key.pem --fullchain-fil
 ```shell
 ./onedrive-proxy-linux-amd64
 ```
-### 附OneDrive反代配置
+### OneDrive反代教程
+请不要在同一台机子上搭建，否则端口会有冲突
+- 安装 `Docker`和 `Docker-Compose`
+```shell
+# 安装Docker
+curl -sSL https://get.docker.io | bash
+# 安装Docker-Compose
+curl -L "https://github.com/docker/compose/releases/download/v2.16.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose && chmod +x /usr/local/bin/docker-compose && ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
 ```
-#PROXY-START/
-location  ~* \.(php|jsp|cgi|asp|aspx)$
-{
-    proxy_pass https://改成你的-my.sharepoint.com;
-    proxy_set_header Host 改成你的-my.sharepoint.com;
-    proxy_set_header X-Real-IP $remote_addr;
-    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-    proxy_set_header REMOTE-HOST $remote_addr;   
-    proxy_set_header Range $http_range;
-}
-location /
-{
-    proxy_pass https://改成你的-my.sharepoint.com;
-    proxy_set_header Host 改成你的-my.sharepoint.com;
-    proxy_set_header X-Real-IP $remote_addr;
-    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-    proxy_set_header REMOTE-HOST $remote_addr;
-    proxy_set_header Range $http_range; 
-    
-    add_header X-Cache $upstream_cache_status;
-    
-    #Set Nginx Cache
-    
-    	add_header Cache-Control no-cache;
-    expires 12h;
-}
+- 安装 `Nginx Proxy Manager`
+```shell
+# 创建Nginx Proxy Manager文件夹
+mkdir -p Nginx-Proxy-Manager
+# 进入Nginx-Proxy-Manager文件夹
+cd Nginx-Proxy-Manager
+# 创建docker-compose.yml文件
+touch docker-compose.yml
+```
+编辑 `docker-compose.yml`粘贴以下内容
+```yaml
+version: '3'
+services:
+  app:
+    image: 'jc21/nginx-proxy-manager:latest'
+    restart: unless-stopped
+    ports:
+      - '80:80'
+      - '81:81'
+      - '443:443'
+    volumes:
+      - ./data:/data
+      - ./letsencrypt:/etc/letsencrypt
+```
+启动容器
+```shell
+docker-compose up -d
+```
+启动成功后访问 `http://IP:81`进入Nginx Proxy Manager，默认用户名为 `admin@example.com`，密码为 `changeme`
 
-#PROXY-END/
-```
+- 创建OneDrive反代配置
+    - 进入后台后，点击菜单栏中的 `Hosts` -> `Proxy Hosts` -> `Add Proxy Hosts`
+    - `Domain Names`填写你的域名、`Scheme`为 `https`、`Forward Hostname / IP`填写 `改成你的-my.sharepoint.com`、`Forward Port`填写`443`
+    - `SSL Certificate`选择`Request a new SSL Certifite`,打开`Force SSL`、`HTTP/2 Support`、`I Agree to the ...`的开关
+    - `Custom Nginx Configuration`填写下面的配置,最后点击`Save`
+        ```
+        #PROXY-START/
+        location  ~* \.(php|jsp|cgi|asp|aspx)$
+        {
+            proxy_pass https://改成你的-my.sharepoint.com;
+            proxy_set_header Host 改成你的-my.sharepoint.com;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header REMOTE-HOST $remote_addr;   
+            proxy_set_header Range $http_range;
+        }
+        location /
+        {
+            proxy_pass https://改成你的-my.sharepoint.com;
+            proxy_set_header Host 改成你的-my.sharepoint.com;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header REMOTE-HOST $remote_addr;
+            proxy_set_header Range $http_range; 
+            
+            add_header X-Cache $upstream_cache_status;
+            
+            #Set Nginx Cache
+            
+                add_header Cache-Control no-cache;
+            expires 12h;
+        }
+        
+        #PROXY-END/
+        ```
