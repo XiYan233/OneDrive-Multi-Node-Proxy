@@ -31,7 +31,7 @@ jobs:
         uses: docker/build-push-action@v2.4.0
         with:
             #Dockerfile的目录
-          context: ./samba
+          context: ./
             #编译的目标系统
           platforms: linux/arm64/v8,linux/amd64
           push: true
