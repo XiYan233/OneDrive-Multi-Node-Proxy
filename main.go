@@ -4,7 +4,6 @@ import (
 	"OneDrive-Download-Proxy/utils"
 	"fmt"
 	"github.com/gin-gonic/gin"
-	"github.com/lionsoul2014/ip2region/binding/golang/xdb"
 	"net"
 	"net/http"
 )
@@ -25,15 +24,6 @@ func main() {
 			ip = forwardedIp
 		}
 
-		var dbPath = "./xdb/ip2region.xdb"
-		searcher, err := xdb.NewWithFileOnly(dbPath)
-		if err != nil {
-			fmt.Printf("failed to create searcher: %s\n", err.Error())
-			return
-		}
-
-		defer searcher.Close()
-
 		// 移动  223.104.76.193
 		// 联通  112.64.0.2
 		// 电信  58.87.64.5
@@ -41,10 +31,6 @@ func main() {
 
 		fmt.Println(remoteIP)
 		fmt.Println(ip)
-		if err != nil {
-			fmt.Printf("failed to SearchIP(%s): %s\n", ip, err)
-			return
-		}
 		url := c.Request.URL.String()
 		netStr, redirectUrl := utils.CheckIP(ip)
 		fmt.Printf("{url:%s}\n", url)
