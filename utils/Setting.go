@@ -11,10 +11,11 @@ type UrlConfig struct {
 
 type Config struct {
 	URLConfig struct {
-		CnMobile UrlConfig `json:"cn_mobile"`
-		CnTele   UrlConfig `json:"cn_tele"`
-		CnUni    UrlConfig `json:"cn_uni"`
-		Other    UrlConfig `json:"other"`
+		CnMobile    UrlConfig `json:"cn_mobile"`
+		CnTele      UrlConfig `json:"cn_tele"`
+		CnUni       UrlConfig `json:"cn_uni"`
+		CnGuangdian UrlConfig `json:"cn_guangdian"`
+		Other       UrlConfig `json:"other"`
 	} `json:"url_config"`
 }
 
