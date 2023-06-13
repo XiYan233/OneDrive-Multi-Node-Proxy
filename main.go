@@ -19,10 +19,10 @@ func main() {
 
 		ip := ""
 
-		if remoteIP == "" {
-			ip = forwardedIp
-		} else {
+		if forwardedIp == "" {
 			ip = remoteIP
+		} else {
+			ip = forwardedIp
 		}
 
 		var dbPath = "./xdb/ip2region.xdb"
