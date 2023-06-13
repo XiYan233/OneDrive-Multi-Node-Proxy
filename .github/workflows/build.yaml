@@ -33,7 +33,7 @@ jobs:
             #Dockerfile的目录
           context: ./
             #编译的目标系统
-          platforms: linux/arm64/v8,linux/amd64
+          platforms: linux/arm64,linux/amd64
           push: true
             #docker提交的名字
           tags: "xiyan233/onedrive_multi_node_proxy:2.0.0,xiyan233/onedrive_multi_node_proxy:latest"
