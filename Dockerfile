@@ -17,4 +17,4 @@ RUN go build -o onedrive-proxy
 EXPOSE 8080
 
 # 启动项目
-CMD ["./onedrive-proxy"]
+CMD ["/app/./onedrive-proxy"]

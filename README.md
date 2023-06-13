@@ -10,6 +10,8 @@
 ### 准备
 - 前往 `Releases` 下载最新文件
 - 解压最新压缩包
+
+Linux方式部署
 ```shell
 tar -zxvf onedrive-proxy-linux-amd64.tar.gz
 ```
