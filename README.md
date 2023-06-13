@@ -1,7 +1,7 @@
 ## OneDrive多节点下载
 
 <p align="center">
-    <a href="https://github.com/XiYan233"><img alt="Author" src="https://img.shields.io/badge/author-Demontisa-blueviolet"/></a>
+    <a href="https://github.com/XiYan233"><img alt="Author" src="https://img.shields.io/badge/author-XiYan233-blueviolet"/></a>
     <img alt="Go" src="https://img.shields.io/badge/code-Go-success"/>
 </p>
 通过配置多个代理节点来代理OneDrive下载的流量，可根据访问者的运营商来分配指定的下载节点。
