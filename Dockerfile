@@ -5,16 +5,18 @@ FROM golang:latest
 WORKDIR /app
 
 # 复制项目源代码到容器中
-COPY . .
+COPY . ./app
 
 # 下载和安装依赖包
 RUN go mod download
 
 # 构建项目
-RUN go build -o onedrive-proxy
+RUN go build -o onedrive-proxy ./main.go
 
 # 暴露端口
 EXPOSE 8080
 
+VOLUME ["/app"]
+
 # 启动项目
-CMD ["/app/./onedrive-proxy"]
+ENTRYPOINT ["./onedrive-proxy"]
