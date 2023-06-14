@@ -47,7 +47,7 @@ cd onedrive-proxy-linux-amd64
 ./onedrive-proxy-linux-amd64
 ```
 ### OneDrive反代教程
-请不要在同一台机子上搭建，否则端口会有冲突
+~请不要在同一台机子上搭建，否则端口会有冲突~
 - 安装 `Docker`和 `Docker-Compose`
 ```shell
 # 安装Docker
