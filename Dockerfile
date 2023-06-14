@@ -5,7 +5,7 @@ FROM golang:latest
 WORKDIR /app
 
 # 复制项目源代码到容器中
-COPY . ./app
+COPY . /app
 
 # 下载和安装依赖包
 RUN go mod download
