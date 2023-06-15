@@ -19,4 +19,4 @@ EXPOSE 8080
 VOLUME ["/app"]
 
 # 启动项目
-ENTRYPOINT ["./onedrive-proxy"]
+ENTRYPOINT ["cd /app && ./onedrive-proxy"]
