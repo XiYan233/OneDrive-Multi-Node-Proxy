@@ -8,7 +8,7 @@ WORKDIR /app
 COPY . /app
 
 # 下载和安装依赖包 构建项目
-RUN cd /app && go mod download && go build -o onedrive-proxy /app/main.go
+RUN go mod download && go build -o onedrive-proxy ./main.go
 
 FROM alpine:latest as final
 
@@ -19,10 +19,10 @@ COPY --from=builder /app/config/config.json /app/config/
 
 WORKDIR /app
 
-VOLUME ["/app"]
+VOLUME ["/app/config"]
 
 # 暴露端口
 EXPOSE 8080
 
 # 启动项目
-ENTRYPOINT ["./onedrive-proxy"]
+CMD ["./onedrive-proxy"]
