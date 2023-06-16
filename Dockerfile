@@ -15,8 +15,6 @@ FROM alpine:latest as final
 # 从builder中复制编译好的可执行文件
 COPY --from=builder /app/onedrive-proxy /app/
 
-COPY --from=builder /app/config/config.json /app/config/
-
 WORKDIR /app
 
 VOLUME ["/app/config"]

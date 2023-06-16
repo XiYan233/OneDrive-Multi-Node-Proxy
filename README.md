@@ -11,6 +11,10 @@
 - 前往 `Releases` 下载最新文件
 - 解压最新压缩包
 
+Docker compose 方式部署
+
+[Hub 地址](https://hub.docker.com/r/xiyan233/onedrive_multi_node_proxy)
+
 Linux方式部署
 ```shell
 tar -zxvf onedrive-proxy-linux-amd64.tar.gz
