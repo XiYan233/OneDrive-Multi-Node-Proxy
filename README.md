@@ -89,7 +89,8 @@ docker-compose up -d
 ```
 启动成功后访问 `http://IP:81`进入Nginx Proxy Manager，默认用户名为 `admin@example.com`，密码为 `changeme`
 
-- 创建OneDrive反代配置
+创建反向代理(OneDrive/SharePoint),视情况而定
+- OneDrive反代配置
     - 进入后台后，点击菜单栏中的 `Hosts` -> `Proxy Hosts` -> `Add Proxy Hosts`
     - `Domain Names`填写你的域名、`Scheme`为 `https`、`Forward Hostname / IP`填写 `改成你的-my.sharepoint.com`、`Forward Port`填写`443`
     - `SSL Certificate`选择`Request a new SSL Certifite`,打开`Force SSL`、`HTTP/2 Support`、`I Agree to the ...`的开关
@@ -109,6 +110,41 @@ docker-compose up -d
         {
             proxy_pass https://改成你的-my.sharepoint.com;
             proxy_set_header Host 改成你的-my.sharepoint.com;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header REMOTE-HOST $remote_addr;
+            proxy_set_header Range $http_range; 
+            
+            add_header X-Cache $upstream_cache_status;
+            
+            #Set Nginx Cache
+            
+                add_header Cache-Control no-cache;
+            expires 12h;
+        }
+        
+        #PROXY-END/
+        ```
+- SharePoint反代配置
+    - 进入后台后，点击菜单栏中的 `Hosts` -> `Proxy Hosts` -> `Add Proxy Hosts`
+    - `Domain Names`填写你的域名、`Scheme`为 `https`、`Forward Hostname / IP`填写 `改成你的.sharepoint.com`、`Forward Port`填写`443`
+    - `SSL Certificate`选择`Request a new SSL Certifite`,打开`Force SSL`、`HTTP/2 Support`、`I Agree to the ...`的开关
+    - `Custom Nginx Configuration`填写下面的配置,最后点击`Save`
+        ```
+        #PROXY-START/
+        location  ~* \.(php|jsp|cgi|asp|aspx)$
+        {
+            proxy_pass https://改成你的.sharepoint.com;
+            proxy_set_header Host 改成你的.sharepoint.com;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header REMOTE-HOST $remote_addr;   
+            proxy_set_header Range $http_range;
+        }
+        location /
+        {
+            proxy_pass https://改成你的.sharepoint.com;
+            proxy_set_header Host 改成你的.sharepoint.com;
             proxy_set_header X-Real-IP $remote_addr;
             proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
             proxy_set_header REMOTE-HOST $remote_addr;
