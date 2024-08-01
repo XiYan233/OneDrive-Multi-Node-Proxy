@@ -1,5 +1,5 @@
 # 使用 golang 作为基础镜像
-FROM golang:1.19.10-alpine AS builder
+FROM golang:1.22.5-alpine AS builder
 
 # 设置工作目录
 WORKDIR /app
@@ -8,7 +8,7 @@ WORKDIR /app
 COPY . /app
 
 # 下载和安装依赖包 构建项目
-RUN go mod download && go build -o onedrive-proxy ./main.go
+RUN go mod download && go build -o onedrive-proxy /app/main.go
 
 FROM alpine:latest as final
 
