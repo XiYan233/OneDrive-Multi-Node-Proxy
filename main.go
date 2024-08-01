@@ -4,6 +4,7 @@ import (
 	"OneDrive-Download-Proxy/utils"
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"log/slog"
 	"net"
 	"net/http"
 )
@@ -29,10 +30,11 @@ func main() {
 		// 电信  58.87.64.5
 		// 广电  117.120.128.0
 
-		fmt.Println(remoteIP)
-		fmt.Println(ip)
+		slog.Info("Main", "RemoteIP", remoteIP)
+		slog.Info("Main", "IP", ip)
 		url := c.Request.URL.String()
 		netStr, redirectUrl := utils.CheckIP(ip)
+		//netStr, redirectUrl := utils.CheckIP("117.120.128.0")
 		fmt.Printf("{url:%s}\n", url)
 		fmt.Printf("请求运营商为：%s，返回地址为：%s\n", netStr, redirectUrl+url)
 

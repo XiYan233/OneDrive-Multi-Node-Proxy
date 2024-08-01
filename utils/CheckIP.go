@@ -3,9 +3,9 @@ package utils
 import (
 	"OneDrive-Download-Proxy/types"
 	"encoding/json"
-	"fmt"
 	"io"
 	"log"
+	"log/slog"
 	"net/http"
 	"strings"
 )
@@ -14,7 +14,7 @@ func CheckIP(ip string) (string, string) {
 	urlConfig, _ := LoadConfig("./config/config.json")
 
 	client := &http.Client{}
-	req, err := http.NewRequest("GET", "https://forge.speedtest.cn/api/location/info?ip="+ip, nil)
+	req, err := http.NewRequest("GET", "https://api.ip.sb/geoip/"+ip, nil)
 	if err != nil {
 		log.Println(err)
 	}
@@ -49,18 +49,16 @@ func CheckIP(ip string) (string, string) {
 		log.Println(err)
 	}
 
-	fmt.Println(ipInfoType.NetStr)
+	//fmt.Println(ipInfoType.Isp)
+	slog.Info("CheckIP", "ISP", ipInfoType.Isp)
+	netIsp := ipInfoType.Isp
 
-	netStr := ipInfoType.NetStr
-
-	if strings.Contains(netStr, "中国") && strings.Contains(netStr, "移动") {
-		return ipInfoType.NetStr, urlConfig.URLConfig.CnMobile.URL
-	} else if strings.Contains(netStr, "中国") && strings.Contains(netStr, "联通") {
-		return ipInfoType.NetStr, urlConfig.URLConfig.CnUni.URL
-	} else if strings.Contains(netStr, "中国") && strings.Contains(netStr, "电信") {
-		return ipInfoType.NetStr, urlConfig.URLConfig.CnTele.URL
-	} else if strings.Contains(netStr, "中国") && strings.Contains(netStr, "广电") {
-		return ipInfoType.NetStr, urlConfig.URLConfig.CnGuangdian.URL
+	if strings.Contains(netIsp, "China") && strings.Contains(netIsp, "Mobile") {
+		return ipInfoType.Isp, urlConfig.URLConfig.CnMobile.URL
+	} else if strings.Contains(netIsp, "China") && strings.Contains(netIsp, "Unicom") {
+		return ipInfoType.Isp, urlConfig.URLConfig.CnUni.URL
+	} else if strings.Contains(netIsp, "China") && strings.Contains(netIsp, "Telecom") {
+		return ipInfoType.Isp, urlConfig.URLConfig.CnTele.URL
 	}
-	return ipInfoType.NetStr, urlConfig.URLConfig.Other.URL
+	return ipInfoType.Isp, urlConfig.URLConfig.Other.URL
 }
