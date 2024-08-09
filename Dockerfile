@@ -17,6 +17,9 @@ COPY --from=builder /app/onedrive-proxy /app/
 
 WORKDIR /app
 
+# 修改可执行文件的权限
+RUN chmod +x /app/onedrive-proxy
+
 VOLUME ["/app/config"]
 
 # 暴露端口
